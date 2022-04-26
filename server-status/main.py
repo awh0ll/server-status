@@ -1,6 +1,6 @@
 import socket
 
-def poll_http(host, port = 80):
+def poll_tcp(host, port):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((host, port))
@@ -9,7 +9,8 @@ def poll_http(host, port = 80):
         print(e)
         return False
 
-if(poll_http("127.0.0.1")):
+
+if(poll_tcp("127.0.0.1", 443)):
     print("it works!")
 else:
     print("oh no!")
