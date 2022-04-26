@@ -1,5 +1,7 @@
 import socket
 import os
+import ssl
+import datetime
 
 def poll_tcp(hostname, port):
     try:
@@ -15,7 +17,15 @@ def ping(hostname):
 
     return response == 0
 
-if ping("google.com"):
-    print("it works!")
-else:
-    print("oh no!")
+def get_ssl_expiry(hostname, port = 443):
+    ssl_dateformat = r'%b %d %H:%M:%S %Y %Z'
+    context = ssl.create_default_context()
+
+    conn = context.wrap_socket(socket.socket(socket.AF_INET), server_hostname = hostname)
+
+    conn.settimeout(5.0)
+
+    conn.connect((hostname, port))
+    cert = conn.getpeercert()
+
+    return datetime.datetime.strptime(cert['notAfter'], ssl_dateformat)
