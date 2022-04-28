@@ -8,10 +8,9 @@ import ssl
 import datetime
 import json
 
-'''
-Load monitors from json file 'input.json' in root of project directory.
-'''
+
 def load_monitors():
+    '''Load monitors from json file 'input.json' in root of project directory.'''
     input_file = open('input.json')
 
     data = json.load(input_file)
@@ -20,10 +19,8 @@ def load_monitors():
 
     return data['monitors']
 
-'''
-Returns true if a TCP socket can be successfully opened on the given host and port, false if not.
-'''
 def poll_tcp(hostname, port):
+    '''Returns true if a TCP socket can be successfully opened on the given host and port, false if not.'''
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((hostname, port))
@@ -31,18 +28,14 @@ def poll_tcp(hostname, port):
     except socket.error:
         return False
 
-'''
-Returns true if host can be successfully pinged, false if not.
-'''
 def ping(hostname):
+    '''Returns true if host can be successfully pinged, false if not.'''
     response = os.system("ping " + hostname)
 
     return response == 0
 
-'''
-Returns SSL certificate expiration date.
-'''
 def get_ssl_expiry(hostname, port = 443):
+    '''Returns SSL certificate expiration date.'''
     ssl_dateformat = r'%b %d %H:%M:%S %Y %Z'
     context = ssl.create_default_context()
 
