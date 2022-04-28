@@ -51,4 +51,7 @@ def get_ssl_expiry(hostname, port = 443):
     #Return just date
     return datetime.datetime.strptime(cert['notAfter'], ssl_dateformat)
 
-load_monitors()
+monitors = load_monitors()
+
+for monitor in monitors:
+    print(monitor)
