@@ -2,8 +2,16 @@ import socket
 import os
 import ssl
 import datetime
+from xmlrpc.client import Boolean
 
-def poll_tcp(hostname, port):
+class Monitor:
+    def __init__(self, hostname, port, protocol = "tcp", interval = 5) -> None:
+        self.hostname = hostname
+        self.port = port
+        self.protocol = protocol
+        self.interval = interval
+
+def poll_tcp(hostname, port) -> Boolean:
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((hostname, port))
@@ -12,7 +20,7 @@ def poll_tcp(hostname, port):
         print(e)
         return False
 
-def ping(hostname):
+def ping(hostname) -> Boolean:
     response = os.system("ping " + hostname)
 
     return response == 0
