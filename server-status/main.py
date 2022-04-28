@@ -29,3 +29,4 @@ def get_ssl_expiry(hostname, port = 443):
     cert = conn.getpeercert()
 
     return datetime.datetime.strptime(cert['notAfter'], ssl_dateformat)
+
