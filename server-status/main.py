@@ -11,18 +11,17 @@ import json
 
 def load_monitors():
     '''Load monitors from json file 'input.json' in root of project directory.'''
-    input_file = open('input.json')
-
-    data = json.load(input_file)
-
-    input_file.close()
+    
+    with open("input.json", "r", encoding="utf-8") as input_file:
+        data = json.load(input_file)
 
     return data['monitors']
 
 def poll_tcp(hostname, port):
     '''Returns true if a TCP socket can be successfully opened on the given host and port, false if not.'''
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.socket(socket.AF_INET,
+                             socket.SOCK_STREAM)
         sock.connect((hostname, port))
         return True
     except socket.error:
