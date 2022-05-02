@@ -17,10 +17,13 @@ def load_monitors():
 
     return data['monitors']
 
-def poll(monitor):
+def poll(mon):
     '''Given an arbitary monitor, polls it'''
-    if monitor['protocol'] == 'tcp':
-        return poll_tcp(monitor['host'], monitor['port'])
+    if mon['protocol'] == 'tcp':
+        return poll_tcp(mon['host'], mon['port'])
+    
+    print("Unknown monitor type.")
+    return False
 
 def poll_tcp(hostname, port):
     '''Returns true if a TCP socket can be successfully opened on the given host and port'''
