@@ -21,7 +21,7 @@ def poll(mon):
     '''Given an arbitary monitor, polls it'''
     if mon['protocol'] == 'tcp':
         return poll_tcp(mon['host'], mon['port'])
-    
+
     print("Unknown monitor type.")
     return False
 
