@@ -7,6 +7,7 @@ import os
 import ssl
 import datetime
 import json
+import time
 
 
 def load_monitors():
@@ -16,13 +17,24 @@ def load_monitors():
 
     return data['monitors']
 
+def poll(mon):
+    '''Given an arbitary monitor, polls it'''
+    if mon['protocol'] == 'tcp':
+        return poll_tcp(mon['host'], mon['port'])
+
+    print("Unknown monitor type.")
+    return False
+
 def poll_tcp(hostname, port):
     '''Returns true if a TCP socket can be successfully opened on the given host and port'''
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((hostname, port))
+
+        print(hostname + " up")
         return True
     except socket.error:
+        print(hostname + " down")
         return False
 
 def ping(hostname):
@@ -51,3 +63,9 @@ monitors = load_monitors()
 
 for monitor in monitors:
     print(monitor)
+
+while True:
+    for monitor in monitors:
+        poll(monitor)
+
+    time.sleep(15)
