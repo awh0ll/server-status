@@ -2,6 +2,7 @@
 Monitors ports n stuff.
 '''
 
+import logging
 import socket
 import os
 import ssl
@@ -13,6 +14,7 @@ import time
 def load_monitors():
     '''Load monitors from json file 'input.json' in root of project directory.'''
     with open("input.json", "r", encoding="utf-8") as input_file:
+        logging.debug("Opening %s...", "input.json")
         data = json.load(input_file)
 
     return data['monitors']
@@ -22,7 +24,7 @@ def poll(mon):
     if mon['protocol'] == 'tcp':
         return poll_tcp(mon['host'], mon['port'])
 
-    print("Unknown monitor type.")
+    logging.error("Unknown monitor type.")
     return False
 
 def poll_tcp(hostname, port):
@@ -31,10 +33,10 @@ def poll_tcp(hostname, port):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((hostname, port))
 
-        print(hostname + " up")
+        logging.info("%s up", hostname)
         return True
     except socket.error:
-        print(hostname + " down")
+        logging.info("%s down", hostname)
         return False
 
 def ping(hostname):
@@ -59,13 +61,20 @@ def get_ssl_expiry(hostname, port = 443):
     #Return just date
     return datetime.datetime.strptime(cert['notAfter'], ssl_dateformat)
 
-monitors = load_monitors()
 
-for monitor in monitors:
-    print(monitor)
+def main():
+    '''Main program loop.'''
+    monitors = load_monitors()
 
-while True:
     for monitor in monitors:
-        poll(monitor)
+        logging.info("Loaded monitor for host: %s on port: %d", monitor['host'], monitor['port'])
 
-    time.sleep(15)
+    while True:
+        for monitor in monitors:
+            poll(monitor)
+
+        time.sleep(15)
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    main()
