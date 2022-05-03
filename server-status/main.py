@@ -24,7 +24,7 @@ def poll(mon):
     if mon['protocol'] == 'tcp':
         return poll_tcp(mon['host'], mon['port'])
 
-    logging.error("Unknown monitor type: \n" + mon)
+    logging.error("Unknown monitor type.")
     return False
 
 def poll_tcp(hostname, port):
