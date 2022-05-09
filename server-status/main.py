@@ -13,11 +13,19 @@ import time
 
 def load_monitors():
     '''Load monitors from json file 'input.json' in root of project directory.'''
-    with open("input.json", "r", encoding="utf-8") as input_file:
-        logging.debug("Opening %s...", "input.json")
+    with open("conf/input.json", "r", encoding="utf-8") as input_file:
+        logging.debug("Opening %s...", "conf/input.json")
         data = json.load(input_file)
 
     return data['monitors']
+
+def load_smtp_config():
+    '''Load SMTP config from conf/smtp.json'''
+    with open("conf/smtp.json","r", encoding="utf-8") as input_file:
+        logging.debug("Opening %s...", "conf/input.json")
+        data = json.load(input_file)
+
+    return data['smtp']
 
 def poll(mon):
     '''Given an arbitary monitor, polls it'''
