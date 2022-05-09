@@ -23,6 +23,8 @@ def poll(mon):
     '''Given an arbitary monitor, polls it'''
     if mon['protocol'] == 'tcp':
         return poll_tcp(mon['host'], mon['port'])
+    elif mon['protocol'] == 'udp':
+        return poll_udp(mon['host'], mon['port'])
 
     logging.error("Unknown monitor type.")
     return False
@@ -31,6 +33,18 @@ def poll_tcp(hostname, port):
     '''Returns true if a TCP socket can be successfully opened on the given host and port'''
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((hostname, port))
+
+        logging.info("%s up", hostname)
+        return True
+    except socket.error:
+        logging.info("%s down", hostname)
+        return False
+
+def poll_udp(hostname, port):
+    '''Returns true if a UDP socket can be successfully opened on the given host and port'''
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.connect((hostname, port))
 
         logging.info("%s up", hostname)
