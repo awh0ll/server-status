@@ -31,7 +31,8 @@ def poll(mon):
     '''Given an arbitary monitor, polls it'''
     if mon['protocol'] == 'tcp':
         return poll_tcp(mon['host'], mon['port'])
-    elif mon['protocol'] == 'udp':
+    
+    if mon['protocol'] == 'udp':
         return poll_udp(mon['host'], mon['port'])
 
     logging.error("Unknown monitor type.")
@@ -87,6 +88,7 @@ def get_ssl_expiry(hostname, port = 443):
 def main():
     '''Main program loop.'''
     monitors = load_monitors()
+    smtp_config = load_smtp_config()
 
     for monitor in monitors:
         logging.info("Loaded monitor for host: %s on port: %d", monitor['host'], monitor['port'])
