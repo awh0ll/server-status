@@ -31,7 +31,7 @@ def poll(mon):
     '''Given an arbitary monitor, polls it'''
     if mon['protocol'] == 'tcp':
         return poll_tcp(mon['host'], mon['port'])
-    
+
     if mon['protocol'] == 'udp':
         return poll_udp(mon['host'], mon['port'])
 
