@@ -88,7 +88,7 @@ def get_ssl_expiry(hostname, port = 443):
 def main():
     '''Main program loop.'''
     monitors = load_monitors()
-    smtp_config = load_smtp_config()
+    load_smtp_config()
 
     for monitor in monitors:
         logging.info("Loaded monitor for host: %s on port: %d", monitor['host'], monitor['port'])
